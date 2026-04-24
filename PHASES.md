@@ -1,0 +1,19 @@
+# Hack the Planet Phase Tracker
+
+This file tracks the current implementation pass requested on 2026-04-24.
+
+- [x] 1. Add and lint a Google DESIGN.md design contract
+- [x] 2. Clean up starter cruft and favicon reference
+- [x] 3. Harden desktop/window/taskbar foundation
+- [x] 4. Improve terminal commands/history/autocomplete/sound hooks
+- [x] 5. Build the first complete Trash mini-app
+
+Future phases from the broader roadmap:
+
+- [ ] 6. Build Mail app and wire `elm`
+- [ ] 7. Add Matrix rain effect
+- [ ] 8. Build IRC app
+- [ ] 9. Build Netscape fake browser
+- [ ] 10. Build hacking minigame
+- [x] 11. Build Halo CE demake menu
+- [ ] 12. Complete Secrets folder/password hunt

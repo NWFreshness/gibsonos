@@ -1,9 +1,13 @@
 export class Window {
   element: HTMLElement;
   title: string;
+  isMinimized = false;
+
   private onClose: (win: Window) => void;
+  private onFocus: (win: Window) => void;
   private isDragging = false;
   private dragOffset = { x: 0, y: 0 };
+  private previousBounds: { left: string; top: string; width: string; height: string } | null = null;
 
   constructor(
     title: string,
@@ -11,10 +15,12 @@ export class Window {
     width: number,
     height: number,
     zIndex: number,
-    onClose: (win: Window) => void
+    onClose: (win: Window) => void,
+    onFocus: (win: Window) => void = () => {}
   ) {
     this.title = title;
     this.onClose = onClose;
+    this.onFocus = onFocus;
 
     this.element = document.createElement('div');
     this.element.className = 'window';
@@ -38,17 +44,31 @@ export class Window {
     const minimizeBtn = document.createElement('button');
     minimizeBtn.className = 'window-btn';
     minimizeBtn.textContent = '_';
+    minimizeBtn.title = 'Minimize';
+    minimizeBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.minimize();
+    });
     buttons.appendChild(minimizeBtn);
 
     const maximizeBtn = document.createElement('button');
     maximizeBtn.className = 'window-btn';
     maximizeBtn.textContent = '□';
+    maximizeBtn.title = 'Maximize / restore';
+    maximizeBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.toggleMaximize();
+    });
     buttons.appendChild(maximizeBtn);
 
     const closeBtn = document.createElement('button');
     closeBtn.className = 'window-btn';
     closeBtn.textContent = '×';
-    closeBtn.addEventListener('click', () => this.close());
+    closeBtn.title = 'Close';
+    closeBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.close();
+    });
     buttons.appendChild(closeBtn);
 
     titlebar.appendChild(buttons);
@@ -65,8 +85,44 @@ export class Window {
   }
 
   focus() {
-    // Bring to front logic handled by Desktop z-index manager in future
+    this.restore();
+    this.onFocus(this);
+  }
+
+  setZIndex(zIndex: number) {
+    this.element.style.zIndex = String(zIndex);
+  }
+
+  minimize() {
+    this.isMinimized = true;
+    this.element.style.display = 'none';
+  }
+
+  restore() {
+    this.isMinimized = false;
     this.element.style.display = 'flex';
+  }
+
+  toggleMaximize() {
+    if (this.previousBounds) {
+      this.element.style.left = this.previousBounds.left;
+      this.element.style.top = this.previousBounds.top;
+      this.element.style.width = this.previousBounds.width;
+      this.element.style.height = this.previousBounds.height;
+      this.previousBounds = null;
+      return;
+    }
+
+    this.previousBounds = {
+      left: this.element.style.left,
+      top: this.element.style.top,
+      width: this.element.style.width,
+      height: this.element.style.height,
+    };
+    this.element.style.left = '8px';
+    this.element.style.top = '8px';
+    this.element.style.width = 'calc(100vw - 16px)';
+    this.element.style.height = 'calc(100vh - 44px)';
   }
 
   close() {
@@ -76,6 +132,7 @@ export class Window {
 
   private setupDragging(titlebar: HTMLElement) {
     titlebar.addEventListener('mousedown', (e) => {
+      if (this.previousBounds) return;
       this.isDragging = true;
       const rect = this.element.getBoundingClientRect();
       this.dragOffset.x = e.clientX - rect.left;
@@ -97,7 +154,7 @@ export class Window {
 
   private setupFocus() {
     this.element.addEventListener('mousedown', () => {
-      // Desktop would bump z-index here
+      this.onFocus(this);
     });
   }
 }

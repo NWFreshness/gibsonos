@@ -1,8 +1,7 @@
-// Simple audio manager stub — expand with Web Audio API / howler.js later
-
 export class SoundEngine {
   private enabled = true;
   private volume = 0.5;
+  private ctx: AudioContext | null = null;
 
   toggle(on: boolean) {
     this.enabled = on;
@@ -13,38 +12,35 @@ export class SoundEngine {
   }
 
   playClick() {
-    if (!this.enabled) return;
-    // Placeholder: use Web Audio API oscillator for a short click
-    try {
-      const ctx = new AudioContext();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.frequency.value = 800;
-      gain.gain.value = this.volume * 0.05;
-      osc.start();
-      osc.stop(ctx.currentTime + 0.02);
-    } catch {
-      // ignore
-    }
+    this.playTone(800, 0.02, 0.05);
   }
 
   playError() {
-    if (!this.enabled) return;
+    this.playTone(150, 0.15, 0.1);
+  }
+
+  private getContext(): AudioContext | null {
     try {
-      const ctx = new AudioContext();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.frequency.value = 150;
-      gain.gain.value = this.volume * 0.1;
-      osc.start();
-      osc.stop(ctx.currentTime + 0.15);
+      this.ctx ??= new AudioContext();
+      return this.ctx;
     } catch {
-      // ignore
+      return null;
     }
+  }
+
+  private playTone(frequency: number, duration: number, gainMultiplier: number) {
+    if (!this.enabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = frequency;
+    gain.gain.value = this.volume * gainMultiplier;
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
   }
 }
 

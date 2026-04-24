@@ -7,48 +7,48 @@ export class Taskbar {
   }
 
   render() {
-    // Start button
+    this.container.innerHTML = '';
+
     const startBtn = document.createElement('button');
-    startBtn.className = 'window-btn';
-    startBtn.style.width = '54px';
-    startBtn.style.height = '22px';
-    startBtn.style.fontWeight = 'bold';
-    startBtn.textContent = 'root';
+    startBtn.className = 'window-btn taskbar-start';
+    startBtn.textContent = 'root@GIBSON';
     startBtn.addEventListener('click', () => {
-      alert('GIBSON/OS Start Menu coming soon...');
+      const menu = this.container.querySelector('.start-menu');
+      menu?.remove();
+      if (menu) return;
+
+      const popup = document.createElement('div');
+      popup.className = 'start-menu';
+      popup.textContent = 'GIBSON/OS\nTerminal\nMail\nShutdown... nice try.';
+      this.container.appendChild(popup);
     });
     this.container.appendChild(startBtn);
 
-    // Separator
     const sep = document.createElement('div');
-    sep.style.width = '2px';
-    sep.style.height = '22px';
-    sep.style.margin = '0 4px';
-    sep.style.background = '#808080';
-    sep.style.borderLeft = '1px solid #dfdfdf';
+    sep.className = 'taskbar-separator';
     this.container.appendChild(sep);
 
-    // Task area
     const taskArea = document.createElement('div');
     taskArea.id = 'task-area';
-    taskArea.style.display = 'flex';
-    taskArea.style.gap = '2px';
-    taskArea.style.flex = '1';
     this.container.appendChild(taskArea);
 
-    // Tray / Clock
     const tray = document.createElement('div');
-    tray.style.display = 'flex';
-    tray.style.alignItems = 'center';
-    tray.style.gap = '4px';
-    tray.style.padding = '0 4px';
-    tray.style.borderLeft = '1px solid #808080';
-    tray.style.borderTop = '1px solid #808080';
-    tray.style.background = '#c0c0c0';
+    tray.className = 'taskbar-tray';
+
+    const cpu = document.createElement('span');
+    cpu.textContent = 'CPU 13%';
+    tray.appendChild(cpu);
+
+    const net = document.createElement('span');
+    net.textContent = 'NET';
+    tray.appendChild(net);
+
+    const volume = document.createElement('span');
+    volume.textContent = '🔊';
+    tray.appendChild(volume);
 
     const clock = document.createElement('span');
-    clock.style.fontFamily = 'var(--font-ui)';
-    clock.style.fontSize = '11px';
+    clock.className = 'taskbar-clock';
     clock.textContent = this.getTime();
     setInterval(() => {
       clock.textContent = this.getTime();
@@ -58,29 +58,29 @@ export class Taskbar {
     this.container.appendChild(tray);
   }
 
-  addTask(title: string, onFocus: () => void, _onClose: () => void) {
+  addTask(id: string, title: string, onToggle: () => void) {
     const taskArea = this.container.querySelector('#task-area') as HTMLElement;
     if (!taskArea) return;
 
     const btn = document.createElement('button');
-    btn.className = 'window-btn';
-    btn.style.width = 'auto';
-    btn.style.minWidth = '120px';
-    btn.style.height = '22px';
-    btn.style.padding = '0 6px';
-    btn.style.textAlign = 'left';
+    btn.className = 'window-btn taskbar-task';
     btn.textContent = title;
-    btn.addEventListener('click', onFocus);
+    btn.addEventListener('click', onToggle);
     taskArea.appendChild(btn);
-    this.tasks.set(title, btn);
+    this.tasks.set(id, btn);
   }
 
-  removeTask(title: string) {
-    const btn = this.tasks.get(title);
+  removeTask(id: string) {
+    const btn = this.tasks.get(id);
     if (btn) {
       btn.remove();
-      this.tasks.delete(title);
+      this.tasks.delete(id);
     }
+  }
+
+  setTaskActive(id: string, active: boolean) {
+    const btn = this.tasks.get(id);
+    btn?.classList.toggle('active', active);
   }
 
   private getTime(): string {
