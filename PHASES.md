@@ -10,7 +10,7 @@ This file tracks the current implementation pass requested on 2026-04-24.
 
 Future phases from the broader roadmap:
 
-- [ ] 6. Build Mail app and wire `elm`
+- [x] 6. Build Mail app and wire `elm`
 - [ ] 7. Add Matrix rain effect
 - [ ] 8. Build IRC app
 - [x] 9. Build Netscape fake browser
