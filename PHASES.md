@@ -12,7 +12,7 @@ Future phases from the broader roadmap:
 
 - [x] 6. Build Mail app and wire `elm`
 - [ ] 7. Add Matrix rain effect
-- [ ] 8. Build IRC app
+- [x] 8. Build IRC app
 - [x] 9. Build Netscape fake browser
 - [ ] 10. Build hacking minigame
 - [x] 11. Build Halo CE demake menu

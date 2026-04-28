@@ -2,7 +2,6 @@ import { Taskbar } from '../ui/Taskbar';
 import { DesktopIcon } from '../ui/DesktopIcon';
 import { Window } from '../ui/Window';
 import { TerminalApp } from '../apps/terminal/terminal';
-import { createMailApp } from '../apps/mail/MailApp';
 import { createIrcApp } from '../apps/irc/IrcApp';
 import { createNetscapeApp } from '../apps/netscape/NetscapeApp';
 import { createTrashApp } from '../apps/trash/TrashApp';
@@ -84,11 +83,9 @@ export class Desktop {
         this.focusWindow(w);
         break;
       }
-      case 'mail': {
-        const mail = createMailApp();
-        this.spawnWindow('Mail', mail.element, 680, 440);
+      case 'mail':
+        this.spawnWindow('Mail', this.makePlaceholder('Mail client coming soon...'), 500, 350);
         break;
-      }
       case 'irc': {
         const irc = createIrcApp();
         this.spawnWindow('mIRC', irc.element, 650, 450);
