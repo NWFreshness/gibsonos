@@ -462,6 +462,103 @@ button.trash-row:focus {
   font-size: 14px;
 }
 
+/* Netscape Navigator */
+.netscape-app {
+  background: #c0c0c0;
+  font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+}
+
+.netscape-toolbar {
+  background: #c0c0c0;
+  border-bottom: 1px solid #808080;
+  padding: 3px;
+}
+
+.netscape-buttons {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 3px;
+}
+
+.netscape-btn {
+  height: 22px;
+  padding: 0 10px;
+  background: #c0c0c0;
+  border: 1px solid #dfdfdf;
+  border-right-color: #000;
+  border-bottom-color: #000;
+  font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.netscape-btn:active {
+  border: 1px solid #000;
+  border-right-color: #dfdfdf;
+  border-bottom-color: #dfdfdf;
+  background: #a0a0a0;
+  padding: 1px 9px 0 11px;
+}
+
+.netscape-location-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #c0c0c0;
+  padding: 0;
+}
+
+.netscape-location-label {
+  font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  white-space: nowrap;
+}
+
+.netscape-location {
+  flex: 1;
+  height: 20px;
+  padding: 0 4px;
+  background: #fff;
+  border: 1px inset #808080;
+  font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+  font-size: 11px;
+  color: #000;
+  outline: none;
+}
+
+.netscape-content {
+  flex: 1;
+  overflow: auto;
+  background: #fff;
+  border-left: 1px solid #dfdfdf;
+  border-right: 1px solid #000;
+}
+
+.netscape-page {
+  min-height: 100%;
+  padding: 0;
+}
+
+.netscape-page * {
+  box-sizing: border-box;
+}
+
+.netscape-status {
+  height: 20px;
+  padding: 0 6px;
+  background: #c0c0c0;
+  border-top: 1px solid #808080;
+  font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+  font-size: 11px;
+  color: #000;
+  line-height: 20px;
+}
+
 /* Utilities */
 .hidden {
   display: none !important;

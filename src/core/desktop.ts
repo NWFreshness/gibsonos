@@ -2,6 +2,7 @@ import { Taskbar } from '../ui/Taskbar';
 import { DesktopIcon } from '../ui/DesktopIcon';
 import { Window } from '../ui/Window';
 import { TerminalApp } from '../apps/terminal/terminal';
+import { createNetscapeApp } from '../apps/netscape/NetscapeApp';
 import { createTrashApp } from '../apps/trash/TrashApp';
 import { createHaloApp } from '../apps/halo/HaloApp';
 
@@ -53,9 +54,34 @@ export class Desktop {
       case 'terminal':
         this.spawnWindow('Terminal', new TerminalApp({ openApp: (appId) => this.openApp(appId) }).element, 600, 400);
         break;
-      case 'netscape':
-        this.spawnWindow('Netscape Navigator', this.makePlaceholder('Netscape loading...'), 700, 450);
+      case 'netscape': {
+        const winId = `window-${this.nextWindowId++}`;
+        const w = new Window(
+          'Netscape Navigator',
+          document.createElement('div'), // placeholder, replaced below
+          740,
+          500,
+          this.nextZ++,
+          (win) => this.closeWindow(win),
+          (win) => this.focusWindow(win)
+        );
+        const netscape = createNetscapeApp((title) => {
+          w.title = title;
+          const managed = this.windowStack.find((item) => item.window === w);
+          if (managed) managed.title = title;
+        });
+        // swap content
+        const contentArea = w.element.querySelector('.window-content');
+        if (contentArea) {
+          contentArea.innerHTML = '';
+          contentArea.appendChild(netscape.element);
+        }
+        this.windowStack.push({ id: winId, title: 'Netscape Navigator', window: w });
+        this.windowsLayer.appendChild(w.element);
+        this.taskbar.addTask(winId, 'Netscape Navigator', () => this.toggleWindow(winId));
+        this.focusWindow(w);
         break;
+      }
       case 'mail':
         this.spawnWindow('Mail', this.makePlaceholder('Mail client coming soon...'), 500, 350);
         break;
