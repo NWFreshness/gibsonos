@@ -2,6 +2,8 @@ import { Taskbar } from '../ui/Taskbar';
 import { DesktopIcon } from '../ui/DesktopIcon';
 import { Window } from '../ui/Window';
 import { TerminalApp } from '../apps/terminal/terminal';
+import { createMailApp } from '../apps/mail/MailApp';
+import { createIrcApp } from '../apps/irc/IrcApp';
 import { createNetscapeApp } from '../apps/netscape/NetscapeApp';
 import { createTrashApp } from '../apps/trash/TrashApp';
 import { createHaloApp } from '../apps/halo/HaloApp';
@@ -82,12 +84,16 @@ export class Desktop {
         this.focusWindow(w);
         break;
       }
-      case 'mail':
-        this.spawnWindow('Mail', this.makePlaceholder('Mail client coming soon...'), 500, 350);
+      case 'mail': {
+        const mail = createMailApp();
+        this.spawnWindow('Mail', mail.element, 680, 440);
         break;
-      case 'irc':
-        this.spawnWindow('mIRC', this.makePlaceholder('#warez channel coming soon...'), 550, 400);
+      }
+      case 'irc': {
+        const irc = createIrcApp();
+        this.spawnWindow('mIRC', irc.element, 650, 450);
         break;
+      }
       case 'halo': {
         const halo = createHaloApp();
         this.spawnWindow('Halo: Doom Evolved', halo.element, 720, 500);
