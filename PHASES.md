@@ -17,3 +17,5 @@ Future phases from the broader roadmap:
 - [ ] 10. Build hacking minigame
 - [x] 11. Build Halo CE demake menu
 - [ ] 12. Complete Secrets folder/password hunt
+
+<!-- test: gh CLI verification -->
