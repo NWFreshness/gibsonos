@@ -117,6 +117,7 @@ export class TerminalApp {
             const prompt = this.element.querySelector('.terminal-prompt');
             if (prompt) prompt.textContent = text;
           },
+          readline: (prompt: string) => this.doReadline(prompt),
           openApp: this.options.openApp,
         });
       } catch (err) {
@@ -126,6 +127,24 @@ export class TerminalApp {
       sound.playError();
       this.print(`${cmd}: command not found`);
     }
+  }
+
+  private doReadline(prompt: string): Promise<string> {
+    return new Promise((resolve) => {
+      this.print(prompt);
+      this.input.value = '';
+      this.input.focus();
+
+      const handler = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+          this.input.removeEventListener('keydown', handler);
+          const val = this.input.value;
+          this.input.value = '';
+          resolve(val);
+        }
+      };
+      this.input.addEventListener('keydown', handler);
+    });
   }
 
   private print(text: string) {
