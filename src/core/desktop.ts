@@ -3,6 +3,7 @@ import { DesktopIcon } from '../ui/DesktopIcon';
 import { Window } from '../ui/Window';
 import { TerminalApp } from '../apps/terminal/terminal';
 import { createIrcApp } from '../apps/irc/IrcApp';
+import { createSecretsApp } from '../apps/secrets/SecretsApp';
 import { createNetscapeApp } from '../apps/netscape/NetscapeApp';
 import { createTrashApp } from '../apps/trash/TrashApp';
 import { createHaloApp } from '../apps/halo/HaloApp';
@@ -96,9 +97,11 @@ export class Desktop {
         this.spawnWindow('Halo: Doom Evolved', halo.element, 720, 500);
         break;
       }
-      case 'secrets':
-        this.spawnWindow('Secrets', this.makePlaceholder('Password required. Hint: The answer is in the garbage file.'), 420, 220);
+      case 'secrets': {
+        const secrets = createSecretsApp();
+        this.spawnWindow('SECRETS — CLASSIFIED', secrets.element, 680, 460);
         break;
+      }
       case 'trash': {
         const trash = createTrashApp({
           onOpenFile: (title, content) => this.spawnWindow(title, content, 520, 360),

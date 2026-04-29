@@ -16,6 +16,6 @@ Future phases from the broader roadmap:
 - [x] 9. Build Netscape fake browser
 - [x] 10. Build hacking minigame
 - [x] 11. Build Halo CE demake menu
-- [ ] 12. Complete Secrets folder/password hunt
+- [x] 12. Complete Secrets folder/password hunt
 
 <!-- test: gh CLI verification -->
