@@ -5,6 +5,8 @@ export interface CommandContext {
   openApp?: (id: string) => void;
 }
 
+import { MatrixRain } from '../effects/MatrixRain';
+
 export type CommandHandler = (args: string[], ctx: CommandContext) => void | Promise<void>;
 
 function register(registry: Map<string, CommandHandler>, name: string, handler: CommandHandler) {
@@ -103,9 +105,12 @@ ${bottom}
     ctx.print(cow);
   });
 
-  register(registry, 'matrix', (_args, ctx) => {
+  register(registry, 'matrix', async (_args, ctx) => {
     ctx.print('Initiating Matrix digital rain...');
-    ctx.print('(Fullscreen mode not yet implemented in scaffold)');
+    ctx.print('The Matrix has you. Press ESC to exit.');
+    const rain = new MatrixRain();
+    await rain.start(25000);
+    ctx.print('Wake up, Neo...');
   });
 
   register(registry, 'hack', (_args, ctx) => {
