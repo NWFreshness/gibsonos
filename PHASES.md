@@ -14,7 +14,7 @@ Future phases from the broader roadmap:
 - [x] 7. Add Matrix rain effect
 - [x] 8. Build IRC app
 - [x] 9. Build Netscape fake browser
-- [ ] 10. Build hacking minigame
+- [x] 10. Build hacking minigame
 - [x] 11. Build Halo CE demake menu
 - [ ] 12. Complete Secrets folder/password hunt
 

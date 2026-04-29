@@ -2,6 +2,7 @@ export interface CommandContext {
   print: (text: string) => void;
   clear: () => void;
   setPrompt: (text: string) => void;
+  readline: (prompt: string) => Promise<string>;
   openApp?: (id: string) => void;
 }
 
@@ -113,11 +114,105 @@ ${bottom}
     ctx.print('Wake up, Neo...');
   });
 
-  register(registry, 'hack', (_args, ctx) => {
-    ctx.print('Connecting to the Gibson...');
-    ctx.print('Bypassing mainframe firewall...');
-    ctx.print('Trace initiated. Type fast!');
-    ctx.print('(Minigame not yet implemented in scaffold)');
+  register(registry, 'hack', async (_args, ctx) => {
+    ctx.print('╔══════════════════════════════════════╗');
+    ctx.print('║   GIBSON MAINFRAME — PORT 31337     ║');
+    ctx.print('╚══════════════════════════════════════╝');
+    ctx.print('');
+    ctx.print('Connecting to gibson.olo:31337...');
+
+    const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+    await sleep(800);
+    ctx.print('CONNECTED — Banner received.');
+    ctx.print('GIBSON/OS Secure Mainframe v7.1');
+    ctx.print('');
+    await sleep(400);
+    ctx.print('Bypassing firewall...');
+    await sleep(600);
+    ctx.print('Sending crafted packet to port 31337...');
+    await sleep(500);
+    ctx.print('Buffer overflow triggered in crt_scanline.service');
+    await sleep(400);
+    ctx.print('[!] WARNING: Counter-trace detected!');
+    ctx.print('[!] The Gibson is tracing your connection.');
+    ctx.print('');
+
+    // ── TRACE WAR ──────────────────────────────────
+    const codes = [
+      { code: 'DADE', hint: 'Enter override password: ' },
+      { code: 'ACID', hint: 'Disable firewall — authentication code: ' },
+      { code: '007', hint: 'Spoof MAC address — enter hex key: ' },
+      { code: 'HACK', hint: 'Inject rootkit — activation phrase: ' },
+      { code: '31337', hint: 'Kill trace process — elite code: ' },
+    ];
+
+    const maxTime = 6000; // ms per round
+    let score = 0;
+
+    ctx.print('══════ TRACE WAR ══════');
+    ctx.print('Type each code before the trace finds you!');
+    ctx.print('');
+
+    for (let i = 0; i < codes.length; i++) {
+      const { code, hint } = codes[i];
+      ctx.print(`[ROUND ${i + 1}/5] Trace progress: ${'█'.repeat(i * 4)}${'░'.repeat(16 - i * 4)}`);
+
+      const start = Date.now();
+      const answer = await ctx.readline(hint);
+
+      const elapsed = Date.now() - start;
+      const correct = answer.trim().toUpperCase() === code;
+
+      if (correct) {
+        score++;
+        const timeStr = elapsed < 2000 ? 'FAST' : elapsed < 4000 ? 'good' : 'close';
+        ctx.print(`  ${timeStr} — code accepted!`);
+      } else {
+        ctx.print(`  incorrect — trace advancing!`);
+      }
+
+      if (elapsed > maxTime) {
+        ctx.print('');
+        ctx.print('████████████████████████████████████');
+        ctx.print('███  TRACE COMPLETE — LOCATED  ███');
+        ctx.print('████████████████████████████████████');
+        ctx.print('');
+        ctx.print('FBI Cybercrime Division has your address.');
+        ctx.print('They are already on their way.');
+        ctx.print('');
+        ctx.print('Tip: run faster next time. <3 seconds per code.');
+        return;
+      }
+
+      await sleep(600);
+    }
+
+    // ── RESULTS ────────────────────────────────────
+    ctx.print('');
+    if (score >= 4) {
+      ctx.print('╔══════════════════════════════════════╗');
+      ctx.print('║  ▓▓ ACCESS GRANTED — LEVEL 5 ▓▓    ║');
+      ctx.print('╚══════════════════════════════════════╝');
+      ctx.print('');
+      ctx.print('You are now inside the Gibson mainframe.');
+      ctx.print('Root access acquired. Trace terminated.');
+      ctx.print('');
+      ctx.print(`Score: ${score}/5 codes bypassed.`);
+      ctx.print('');
+      ctx.print('Available databases:');
+      ctx.print('  /gibson/financial/  — Ellingson transfer records');
+      ctx.print('  /gibson/personnel/  — Richard V. Peterson, Director of Security');
+      ctx.print('  /gibson/secrets/    — [ENCRYPTED — see Secrets folder]');
+      ctx.print('');
+      ctx.print('The world is yours. Hack the planet.');
+    } else {
+      ctx.print('══════════════════════════════════════');
+      ctx.print(`${score}/5 codes bypassed — partial access`);
+      ctx.print('Trace program activated. Disconnecting...');
+      ctx.print('');
+      ctx.print('You got some data but the Gibson is on alert.');
+      ctx.print('Wait 24 hours before attempting again.');
+    }
   });
 
   register(registry, 'sudo', (_args, ctx) => {
