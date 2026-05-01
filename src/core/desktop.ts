@@ -94,7 +94,7 @@ export class Desktop {
       }
       case 'halo': {
         const halo = createHaloApp();
-        this.spawnWindow('Halo: Doom Evolved', halo.element, 720, 500);
+        this.spawnWindow('Halo: Doom Evolved', halo.element, 720, 500, () => halo.destroy());
         break;
       }
       case 'secrets': {
@@ -114,7 +114,7 @@ export class Desktop {
     }
   }
 
-  private spawnWindow(title: string, content: HTMLElement, width: number, height: number) {
+  private spawnWindow(title: string, content: HTMLElement, width: number, height: number, onDestroy?: () => void) {
     const id = `window-${this.nextWindowId++}`;
     const w = new Window(
       title,
@@ -123,7 +123,8 @@ export class Desktop {
       height,
       this.nextZ++,
       (win) => this.closeWindow(win),
-      (win) => this.focusWindow(win)
+      (win) => this.focusWindow(win),
+      onDestroy
     );
     this.windowStack.push({ id, title, window: w });
     this.windowsLayer.appendChild(w.element);

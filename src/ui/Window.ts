@@ -5,6 +5,7 @@ export class Window {
 
   private onClose: (win: Window) => void;
   private onFocus: (win: Window) => void;
+  private onDestroy?: () => void;
   private isDragging = false;
   private dragOffset = { x: 0, y: 0 };
   private previousBounds: { left: string; top: string; width: string; height: string } | null = null;
@@ -16,11 +17,13 @@ export class Window {
     height: number,
     zIndex: number,
     onClose: (win: Window) => void,
-    onFocus: (win: Window) => void = () => {}
+    onFocus: (win: Window) => void = () => {},
+    onDestroy?: () => void
   ) {
     this.title = title;
     this.onClose = onClose;
     this.onFocus = onFocus;
+    this.onDestroy = onDestroy;
 
     this.element = document.createElement('div');
     this.element.className = 'window';
@@ -126,6 +129,7 @@ export class Window {
   }
 
   close() {
+    this.onDestroy?.();
     this.element.remove();
     this.onClose(this);
   }
