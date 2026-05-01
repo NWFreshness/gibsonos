@@ -729,8 +729,6 @@ button.trash-row:focus {
   cursor: pointer;
 }
 
-<<<<<<< HEAD
-=======
 /* Classified Secrets Dossier */
 .secrets-app {
   display: flex;
@@ -938,7 +936,6 @@ button.trash-row:focus {
   color: #000;
 }
 
->>>>>>> feat/matrix-rain
 /* Utilities */
 .hidden {
   display: none !important;
